@@ -5,7 +5,7 @@ import numpy as np
 import cv2
 import imutils
 import matplotlib.pyplot as plt
-
+from skimage.filters import threshold_local
 # =============================================================================
 # Edge Detection
 # =============================================================================
@@ -46,7 +46,7 @@ for c in cnts:
 		screenCnt = approx
 		break
 # # show the contour (outline) of the piece of paper
-# print("STEP 2: Find contours of paper")
+
 # cv2.drawContours(img, [screenCnt], -1, (0, 255, 0), 2)
 # cv2.imshow("Outline", img)
 # cv2.waitKey(0)
@@ -127,7 +127,7 @@ warped = cv2.cvtColor(warped, cv2.COLOR_BGR2GRAY)
 T = threshold_local(warped, 11, offset = 10, method = "gaussian")
 warped = (warped > T).astype("uint8") * 255
 # show the original and scanned images
-print("STEP 3: Apply perspective transform")
+
 cv2.imshow("Original", imutils.resize(original, height = 650))
 cv2.imshow("Scanned", imutils.resize(warped, height = 650))
 cv2.waitKey(0)
