@@ -10,7 +10,7 @@ from skimage.filters import threshold_local
 # Edge Detection
 # =============================================================================
 # load the image and compute the ratio of the old height to the new height, and resize it.
-img = cv2.imread("img.jpeg")
+img = cv2.imread("paper.jpg")
 ratio = img.shape[0] / 500.0 # 500 : new height
 original = img.copy()
 img = imutils.resize(img,height=500) # resize the image
