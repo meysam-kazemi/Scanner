@@ -45,9 +45,28 @@ for c in cnts:
 	if len(approx) == 4:
 		screenCnt = approx
 		break
-# show the contour (outline) of the piece of paper
-print("STEP 2: Find contours of paper")
-cv2.drawContours(img, [screenCnt], -1, (0, 255, 0), 2)
-cv2.imshow("Outline", img)
+# # show the contour (outline) of the piece of paper
+# print("STEP 2: Find contours of paper")
+# cv2.drawContours(img, [screenCnt], -1, (0, 255, 0), 2)
+# cv2.imshow("Outline", img)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
+
+# =============================================================================
+# Apply a Perspective Transform & Threshold
+# =============================================================================
+# apply the four point transform to obtain a top-down
+# view of the original image
+warped = four_point_transform(orig, screenCnt.reshape(4, 2) * ratio)
+# convert the warped image to grayscale, then threshold it
+# to give it that 'black and white' paper effect
+warped = cv2.cvtColor(warped, cv2.COLOR_BGR2GRAY)
+T = threshold_local(warped, 11, offset = 10, method = "gaussian")
+warped = (warped > T).astype("uint8") * 255
+# show the original and scanned images
+print("STEP 3: Apply perspective transform")
+cv2.imshow("Original", imutils.resize(orig, height = 650))
+cv2.imshow("Scanned", imutils.resize(warped, height = 650))
 cv2.waitKey(0)
-cv2.destroyAllWindows()
+
+
